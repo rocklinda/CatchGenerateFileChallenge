@@ -14,6 +14,7 @@ class XmlOrderSummaryService
 
   public function createOutputFile($orders)
   {    
+    $outputFile = static::getOutputFilePath();
     $xml = new \SimpleXMLElement('<orderSummary></orderSummary>');
 
     foreach ($orders as $order) {
@@ -27,6 +28,9 @@ class XmlOrderSummaryService
       $orderNode->addChild('customerState', $order->customer_state);
     }
 
-    $xml->saveXML(static::getOutputFilePath());
+    $xml->saveXML($outputFile);
+
+    return $outputFile;
+
   }
 }

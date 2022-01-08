@@ -7,6 +7,7 @@ use App\Utility\FormatFileEnum;
 use App\Service\CsvOrderSummaryService;
 use App\Service\JsonlOrderSummaryService;
 use App\Service\XmlOrderSummaryService;
+use App\Service\EmailService;
 
 class GenerateOrderSummaryService
 {
@@ -26,12 +27,18 @@ class GenerateOrderSummaryService
    */
   private XmlOrderSummaryService $xmlOrderSummaryService;
 
+  /**
+   * @var EmailService
+   */
+  private EmailService $emailService;
+
   private const URL = 'https://s3-ap-southeast-2.amazonaws.com/catch-code-challenge/challenge-1-in.jsonl';
 
   public function __construct(
     CsvOrderSummaryService $csvOrderSummaryService,
     JsonlOrderSummaryService $jsonlOrderSummaryService,
-    XmlOrderSummaryService $xmlOrderSummaryService
+    XmlOrderSummaryService $xmlOrderSummaryService,
+    EmailService $emailService
   )
   {
       $this->csvOrderSummaryService = $csvOrderSummaryService;
@@ -39,12 +46,15 @@ class GenerateOrderSummaryService
       $this->jsonlOrderSummaryService = $jsonlOrderSummaryService;
 
       $this->xmlOrderSummaryService = $xmlOrderSummaryService;
+
+      $this->emailService = $emailService;
   }
   
   public function generate(string $format, string $email = null)
   {
     try {
       $openFile = fopen(self::URL, 'r');
+      $outputFile = null;
       $orders = [];
       $i = 0;
       while ((!feof($openFile)) && ($line = fgets($openFile)) !== false) {
@@ -59,16 +69,20 @@ class GenerateOrderSummaryService
 
       switch ($format) {
         case FormatFileEnum::$JSONL:
-          $this->jsonlOrderSummaryService->createOutputFile($orders);
+          $outputFile = $this->jsonlOrderSummaryService->createOutputFile($orders);
           break;
 
         case FormatFileEnum::$XML:
-          $this->xmlOrderSummaryService->createOutputFile($orders);
+          $outputFile = $this->xmlOrderSummaryService->createOutputFile($orders);
           break;
         
         default:
-          $this->csvOrderSummaryService->createOutputFile($orders);
+          $outputFile = $this->csvOrderSummaryService->createOutputFile($orders);
           break;
+      }
+
+      if ($email && $outputFile) {
+        $this->emailService->sendEmail($outputFile, $email);
       }
 
     } catch (\Throwable $th) {

@@ -25,7 +25,7 @@ class JsonlOrderSummaryService
       $line = $this->transform($order);
       $this->append($outputFile, $line);
     }
-    return $fp;
+    return $outputFile;
   }
 
   protected function transform(OrderSummary $order)

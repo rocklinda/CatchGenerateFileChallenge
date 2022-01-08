@@ -34,7 +34,7 @@ class CsvOrderSummaryService
       $line = $this->transform($order);
       $this->append($outputFile, $line);
     }
-    return $fp;
+    return $outputFile;
   }
 
   public function transform(OrderSummary $order)
