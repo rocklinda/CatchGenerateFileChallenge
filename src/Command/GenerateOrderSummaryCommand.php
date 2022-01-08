@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateOrderSummaryCommand extends Command
 {
-    protected static $defaultName = 'GenerateOrderSummary';
+    protected static $defaultName = 'app:GenerateOrderSummary';
     protected static $defaultDescription = 'Generate Order Summary File in csv, jsonl, or xml';
 
     /**

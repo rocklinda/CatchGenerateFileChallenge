@@ -7,12 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-class GenerateOrderSummaryTest extends KernelTestCase
+class GenerateOrderSummaryFileArgumentTest extends KernelTestCase
 {
   
   /** @test */
-  public function generate_default_file_do_correctly()
-  {    
+  public function generate_and_send_email_do_correctly()
+  {
     // SETUP
     $kernel = static::createKernel();
     $application = new Application($kernel);
@@ -23,13 +23,11 @@ class GenerateOrderSummaryTest extends KernelTestCase
 
     // Do something
     $commandTester->execute([
-      '--formatFile' => 'csv',
+      '--formatFile' => 'xml',
     ]);
 
     // success
     $output = $commandTester->getStatusCode();
     $this->assertEquals(Command::SUCCESS, $output);
-
-  }
-
+  }  
 }
