@@ -68,8 +68,8 @@ To run this project, you will need to add the following environment variables to
 ## Features
 
 - Default command will generate file in csv
-- Command to generate file with csv, jsonl, or xml
-- Command option to send file to as attachement
+- Command to generate file in csv, jsonl, or xml
+- Command option to send file to an email as attachement
 
 ## Run Locally
 
@@ -133,11 +133,11 @@ To run tests, run the following command
 ## Lessons Learned
 
 It's been a while since I write code in Symfony so I need extra time to come across read the documentation and some youtube tutorials.
-The biggest challenge was to write unit testing, I still need to improve my code especially to mock results. In this code, I pas the result directly to the real one instead use the mock result
+The biggest challenge was to write unit testing, I still need to improve my code especially to mock results. In this code, I passed the result directly to the real one instead use the mock result.
 ## What Need to be Improved
 
 There some area that need to improve in this project
 
 - Create Event Listeners to send an email asynchronously 
-- Using mock reslut in unit test
+- Using mock result in unit test
 - Covering all test cases including service and utility
